@@ -7,7 +7,6 @@
 //Outputs: The decoded messsage.
 //Note: This can be run multiple times.
 //Comming soon: An encryper to compliment this.
-//
 
 double[] AlphaToNumArr(string inStr, double repeatAdjuster){
     string alphbet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

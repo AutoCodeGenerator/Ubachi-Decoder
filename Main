@@ -31,6 +31,31 @@
     //keyword: "gollum"
     //Output: "our preciousss    "
 
+double[] AlphaToNumArr(string inStr, double repeatAdjuster){
+    string alphbet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    alphbet = alphbet.ToUpper();
+    string inStrAsUpper = inStr.ToUpper();
+    double[] asNumeric = new double[inStr.Length];
+    
+    for(int i = 0; i < inStr.Length; i++)
+    {
+        //Pull alphabetic number (base zero)
+        asNumeric[i] = System.Convert.ToDouble(alphbet.IndexOf(inStrAsUpper[i]));
+        //Test
+        //Console.Write ("(" + keyAsNumeric[i] + ")");
+                    
+        //Mark any repeated letters in the keyword
+        for(int j = 0; j < i; j++)
+        {
+            if (asNumeric[i] == asNumeric[j])
+            {
+                asNumeric[i] += repeatAdjuster;
+            }
+        }
+    }
+    return asNumeric;
+}
+
 string Ubachi(string message, string keyword) {
     string decodedMsg = "";
     int maxMessageLength = 120;
@@ -44,50 +69,14 @@ string Ubachi(string message, string keyword) {
             {
                 
                 //Step 1: Decode the keyword into numbers
-                string alphbet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                alphbet = alphbet.ToUpper();
-                string upperKeyword = "";
-                upperKeyword = keyword.ToUpper();
                 double[] keyAsNumeric = new double[keyword.Length];
-                //Test
-                //Console.Write (keyword + ", " + upperKeyword); 
                 double repeatAdjuster = 1.0/message.Length; //Dividing ensures repetitive messages won't create errors
-                
-                //Identify key numeric
-                for(int i = 0; i < keyword.Length; i++)
-                {
-                    //Pull alphabetic number (base zero)
-                    keyAsNumeric[i] = System.Convert.ToDouble(alphbet.IndexOf(upperKeyword[i]));
-                    //Test
-                    //Console.Write ("(" + keyAsNumeric[i] + ")");
-                    
-                    //Mark any repeated letters in the keyword
-                    for(int j = 0; j < i; j++)
-                    {
-                        if (keyAsNumeric[i] == keyAsNumeric[j])
-                        {
-                            keyAsNumeric[i] += repeatAdjuster;
-                        }
-                    }
-                }
+                keyAsNumeric = AlphaToNumArr(keyword, repeatAdjuster);
                 
                 //Order the key's elements according to numeric value
-                double[] orderedNumeric = new double[keyword.Length];
-                if (orderedNumeric.Length == keyAsNumeric.Length)
-                {
-                    keyAsNumeric.CopyTo(orderedNumeric, 0);
-                    Array.Sort(orderedNumeric);
-                }
-                else 
-                {
-                    Console.Write ("The keyAsNumeric array does not have the same number of elements as the orderedNumeric array.");
-                }
-                //Test
-                //for(int x = 0; x < keyword.Length; x ++)
-                //{
-                //    Console.Write("(" + orderedNumeric[x] + ")");
-                //    Console.Write("(" + keyAsNumeric[x] + ")");
-                //}
+                double[] orderedNumeric = new double[keyword.Length];         
+                keyAsNumeric.CopyTo(orderedNumeric, 0);
+                Array.Sort(orderedNumeric);
                 
                 int repititions = 2;
                 string sectionData = "";
